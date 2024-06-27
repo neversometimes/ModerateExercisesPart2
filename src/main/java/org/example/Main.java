@@ -25,7 +25,7 @@ public class Main {
                 nonDuplicate.add(numbers[i]);                 // else add it to the ArrayList
             }
         }
-        return nonDuplicate;    // return the ArrayList containing the non-duplicate number
+        return nonDuplicate;    // return the ArrayList containing the identified non-duplicate number
     }
 
     public static int distinctStairTraversals(int stairs) {
