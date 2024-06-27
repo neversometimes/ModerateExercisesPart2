@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
-
+   //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
+        System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
     }
 
     public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
@@ -28,10 +28,55 @@ public class Main {
         return nonDuplicate;    // return the ArrayList containing the identified non-duplicate number
     }
 
-    public static int distinctStairTraversals(int stairs) {
-        //ex2: find number of distinct ways to climb n stairs, taking 1 or 2 steps
+    public static int distinctStairTraversals(int stairsCount) {
+        //ex2: find the number of distinct ways to climb n stairs, taking either 1 or 2 steps per traversal
 
-        return 0;
+        ArrayList<Integer> tries = new ArrayList<>();
+        int totalWays = 0;
+
+        if (stairsCount == 0) {return 0;}  //check for 0 stairs
+
+        // create arraylist of '1's based on stairsCount
+        for (int i = 0; i < stairsCount; i++) {
+            tries.add(1);
+        }
+        totalWays++;
+        //System.out.println(tries);          // all 1's traversal
+
+        // start at arraylist[0] merges two consecutive 1s into a 2
+        for (int m = 0; m < tries.size() - 1; m++) {
+            if ((tries.get(m) == 1) && (tries.get(m + 1) == 1)) {
+                tries.remove(m+1);
+                tries.remove(m);
+                tries.addFirst(2);
+                totalWays++;                // count each first merge traversal
+                //System.out.println(tries);
+            }
+
+            // break here if no more 1s found in arraylist
+            if (!tries.contains(1)) { break; }
+
+            // clone original arraylist to permutate traversal cases
+            ArrayList<Integer> permutate = (ArrayList<Integer>)tries.clone();
+
+            // create permutations
+            for (int j = 0; j < permutate.size() - 1; j++) {
+
+                //starting from end of copied arraylist, look for 2,1 pattern where elements will be swapped
+                for (int i = permutate.size() - 1; i > 0; i--) {
+                    if ((permutate.get(i - 1) == 2) && (permutate.get(i) == 1)) {
+                        //swap using set to replace elements
+                        permutate.set(i - 1, 1);
+                        permutate.set(i, 2);
+                        break;
+                    }
+                }
+                totalWays++;                        // count each permutation after merge
+                //System.out.println(permutate);
+            }
+        }
+        //System.out.println(totalCombinations);
+        return totalWays;
     }
 
     public static int findNumOfAllPossiblePaths(int[] maze) {
