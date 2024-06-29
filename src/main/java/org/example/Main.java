@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 public class Main {
@@ -19,79 +20,48 @@ public class Main {
 
    //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
    //     System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
+   //     System.out.println("Number of Paths: " + findNumOfAllPossiblePaths(testMaze));
+   //     System.out.println("1) All distinct 'abcdef123': " + checkAllDistinctChars("abcdef123"));
+   //     System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
 
-          System.out.println("Number of Paths: " + findNumOfAllPossiblePaths(testMaze));
 
     }
 
-    public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
-        //ex1: Find a number that appears only once in a given array.  All others appear twice.
-        //  e.g. input: {10, 20, 10, 20, 30, 40, 40, 30, 50}   result: 50
 
-        ArrayList<Integer> nonDuplicate = new ArrayList<>();
-        nonDuplicate.add(numbers[0]);                         // add first number in array to Nonduplicate ArrayList
 
-        for (int i = 1; i < numbers.length; i++) {      //  starting at 2nd number of array
-            if (nonDuplicate.contains(numbers[i])) {          // if the ArrayList has the number, remove it
-                nonDuplicate.remove(numbers[i]);
-            } else {
-                nonDuplicate.add(numbers[i]);                 // else add it to the ArrayList
-            }
-        }
-        return nonDuplicate;    // return the ArrayList containing the identified non-duplicate number
+
+
+
+// *******************************************************************************
+    public static int firstUniqueChar (String str) {
+        //ex5: find the index of the first unique character in a given string
+
+        return 0;
     }
 
-    public static int distinctStairTraversals(int stairsCount) {
-        //ex2: find the number of distinct ways to climb n stairs, taking either 1 or 2 steps per traversal
+// *******************************************************************************
+    public static boolean checkAllDistinctChars (String str) {
+        //ex4: check if a given string has all distinct characters (one instance only for all chars)
+        //  e.g. "xyyz" result: false  "xuram"  result: true
+        //  THe solution uses a hashmap which does not hold duplicate key/value pairs
+        //  Therefore, any duplicate chars found in the given string will not be added
+        //  If the size of the hashmap = length of string, then all chars are distinct.
 
-        ArrayList<Integer> tries = new ArrayList<>();
-        int totalWays = 0;
+        boolean distinctChars = false;
+        HashMap<String, String> hashmap = new HashMap<>();
+        int hashCharCnt = 0;
 
-        if (stairsCount == 0) {return 0;}  //check for 0 stairs
-
-        // create arraylist of '1's based on stairsCount
-        for (int i = 0; i < stairsCount; i++) {
-            tries.add(1);
+        for (Integer i = 0; i < str.length(); i++) {  // loop to insert each char of str into hashmap
+            hashmap.put(str.substring(i, i+1), i.toString());
         }
-        totalWays++;
-        //System.out.println(tries);          // all 1's traversal
 
-        // start at arraylist[0] merges two consecutive 1s into a 2
-        for (int m = 0; m < tries.size() - 1; m++) {
-            if ((tries.get(m) == 1) && (tries.get(m + 1) == 1)) {
-                tries.remove(m+1);
-                tries.remove(m);
-                tries.addFirst(2);
-                totalWays++;                // count each first merge traversal
-                //System.out.println(tries);
-            }
-
-            // break here if no more 1s found in arraylist
-            if (!tries.contains(1)) { break; }
-
-            // clone original arraylist to permutate traversal cases
-            ArrayList<Integer> permutate = (ArrayList<Integer>)tries.clone();
-
-            // create permutations
-            for (int j = 0; j < permutate.size() - 1; j++) {
-
-                //starting from end of copied arraylist, look for 2,1 pattern where elements will be swapped
-                for (int i = permutate.size() - 1; i > 0; i--) {
-                    if ((permutate.get(i - 1) == 2) && (permutate.get(i) == 1)) {
-                        //swap using set to replace elements
-                        permutate.set(i - 1, 1);
-                        permutate.set(i, 2);
-                        break;
-                    }
-                }
-                totalWays++;                        // count each permutation after merge
-                //System.out.println(permutate);
-            }
+        if ((hashmap.size() == str.length())) {
+            distinctChars = true;
         }
-        //System.out.println(totalCombinations);
-        return totalWays;
+
+        return distinctChars;
     }
-
+// *******************************************************************************
     public static int findNumOfAllPossiblePaths(int[][] maze) {
         //ex3: find all possible paths of a 2D NXN square matrix, starting from top left to bottom right
         //     matrix with '0' is open, '1' is blocked; moves are down or right only
@@ -235,17 +205,80 @@ public class Main {
         return sX + sY + code;
     }
 
-    public static boolean checkAllDistinctChars (String str) {
-        //ex4: check if a string has all distinct characters
+// *******************************************************************************
+    public static int distinctStairTraversals(int stairsCount) {
+        //ex2: find the number of distinct ways to climb n stairs, taking either 1 or 2 steps per traversal
 
-        return false;
+        ArrayList<Integer> tries = new ArrayList<>();
+        int totalWays = 0;
+
+        if (stairsCount == 0) {return 0;}  //check for 0 stairs
+
+        // create arraylist of '1's based on stairsCount
+        for (int i = 0; i < stairsCount; i++) {
+            tries.add(1);
+        }
+        totalWays++;
+        //System.out.println(tries);          // all 1's traversal
+
+        // start at arraylist[0] merges two consecutive 1s into a 2
+        for (int m = 0; m < tries.size() - 1; m++) {
+            if ((tries.get(m) == 1) && (tries.get(m + 1) == 1)) {
+                tries.remove(m+1);
+                tries.remove(m);
+                tries.addFirst(2);
+                totalWays++;                // count each first merge traversal
+                //System.out.println(tries);
+            }
+
+            // break here if no more 1s found in arraylist
+            if (!tries.contains(1)) { break; }
+
+            // clone original arraylist to permutate traversal cases
+            ArrayList<Integer> permutate = (ArrayList<Integer>)tries.clone();
+
+            // create permutations
+            for (int j = 0; j < permutate.size() - 1; j++) {
+
+                //starting from end of copied arraylist, look for 2,1 pattern where elements will be swapped
+                for (int i = permutate.size() - 1; i > 0; i--) {
+                    if ((permutate.get(i - 1) == 2) && (permutate.get(i) == 1)) {
+                        //swap using set to replace elements
+                        permutate.set(i - 1, 1);
+                        permutate.set(i, 2);
+                        break;
+                    }
+                }
+                totalWays++;                        // count each permutation after merge
+                //System.out.println(permutate);
+            }
+        }
+        //System.out.println(totalCombinations);
+        return totalWays;
+    }
+// *******************************************************************************
+    public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
+        //ex1: Find a number that appears only once in a given array.  All others appear twice.
+        //  e.g. input: {10, 20, 10, 20, 30, 40, 40, 30, 50}   result: 50
+
+        ArrayList<Integer> nonDuplicate = new ArrayList<>();
+        nonDuplicate.add(numbers[0]);                         // add first number in array to Nonduplicate ArrayList
+
+        for (int i = 1; i < numbers.length; i++) {      //  starting at 2nd number of array
+            if (nonDuplicate.contains(numbers[i])) {          // if the ArrayList has the number, remove it
+                nonDuplicate.remove(numbers[i]);
+            } else {
+                nonDuplicate.add(numbers[i]);                 // else add it to the ArrayList
+            }
+        }
+        return nonDuplicate;    // return the ArrayList containing the identified non-duplicate number
     }
 
-    public static int firstUniqueChar (String str) {
-        //ex5: find the index of the first unique character in a given string
 
-        return 0;
-    }
+
+
+
+
 
     public static boolean checkSubstringPermutation(String str1, String str2) {
         //ex6: check if str1 is a permutation of str2
