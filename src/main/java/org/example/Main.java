@@ -13,7 +13,7 @@ public class Main {
                                       {0, 0, 0, 0, 0, 0, 0, 0},
                                       {0, 1, 0, 1, 0, 1, 1, 0},
                                       {0, 1, 1, 0, 1, 1, 1, 0},
-                                      {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze
+                                      {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
 
 
     public static void main(String[] args) {
@@ -23,44 +23,97 @@ public class Main {
    //     System.out.println("Number of Paths: " + findNumOfAllPossiblePaths(testMaze));
    //     System.out.println("1) All distinct 'abcdef123': " + checkAllDistinctChars("abcdef123"));
    //     System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
-
-
-    }
+   //     System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
 
 
 
 
 
+    } // Main
 
 // *******************************************************************************
-    public static int firstUniqueChar (String str) {
-        //ex5: find the index of the first unique character in a given string
+    public static boolean ckSubString (String str1, String str2) {
+        //ex9: check if str1 is a substring of str2
 
-        return 0;
+        return false;
+    }
+
+// *******************************************************************************
+    public static String reverseWordsInString (String str) {
+        //ex8: Reverse the words in a sentence
+        //     e.g. sentence a in words the Reverse
+
+        return "";
+    }
+
+// *******************************************************************************
+    public static double divideUsingSubtraction (int num1, int num2) {
+        //ex7: divide two integers using subtraction operator
+
+        return 0.0;
+    }
+
+// *******************************************************************************
+    public static boolean checkSubstringPermutation(String str1, String str2) {
+        //ex6: check if str1 is a permutation of str2
+
+        return true;
+    }
+
+// *******************************************************************************
+    public static Integer firstUniqueChar (String str) {
+        //ex5: find the index of the first non-repeated (unique) character in a given string
+
+        //System.out.println(str);
+        HashMap<String, Integer> hashmap = new HashMap<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            // is chr in hashmap as key?
+            if (hashmap.containsKey (str.substring(i, i+1))) {
+                //replace existing key value = -1
+                hashmap.replace(str.substring(i, i+1), -1 );
+            } else{
+                // add new key with value = string index of chr
+                hashmap.put(str.substring(i, i+1), i);
+            }
+        }
+        // System.out.println(hashmap);
+
+        Integer minIndex = str.length() - 1;  // initial minIndex = max index of str
+
+        // Iterate through hashmap values; identify single instance elements; set minIndex
+        for (Integer value: hashmap.values()) {
+           if  ((value > 0) && (value < minIndex)) {
+               minIndex = value;
+           }
+        }
+        return minIndex;
     }
 
 // *******************************************************************************
     public static boolean checkAllDistinctChars (String str) {
         //ex4: check if a given string has all distinct characters (one instance only for all chars)
         //  e.g. "xyyz" result: false  "xuram"  result: true
-        //  THe solution uses a hashmap which does not hold duplicate key/value pairs
+
+        //  My solution uses a hashmap which does not hold duplicate key/value pairs.
         //  Therefore, any duplicate chars found in the given string will not be added
-        //  If the size of the hashmap = length of string, then all chars are distinct.
+        //  to the hashmap.
+        //  If the size of the hashmap = length of given string, then all chars must be distinct.
 
         boolean distinctChars = false;
         HashMap<String, String> hashmap = new HashMap<>();
-        int hashCharCnt = 0;
 
         for (Integer i = 0; i < str.length(); i++) {  // loop to insert each char of str into hashmap
             hashmap.put(str.substring(i, i+1), i.toString());
         }
 
-        if ((hashmap.size() == str.length())) {
+        if ((hashmap.size() == str.length())) {  //check size of hashmap = length of given string
             distinctChars = true;
         }
 
         return distinctChars;
     }
+
 // *******************************************************************************
     public static int findNumOfAllPossiblePaths(int[][] maze) {
         //ex3: find all possible paths of a 2D NXN square matrix, starting from top left to bottom right
@@ -256,6 +309,7 @@ public class Main {
         //System.out.println(totalCombinations);
         return totalWays;
     }
+
 // *******************************************************************************
     public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
         //ex1: Find a number that appears only once in a given array.  All others appear twice.
@@ -280,30 +334,6 @@ public class Main {
 
 
 
-    public static boolean checkSubstringPermutation(String str1, String str2) {
-        //ex6: check if str1 is a permutation of str2
-
-        return true;
-    }
-
-    public static double divideUsingSubtraction (int num1, int num2) {
-        //ex7: divide two integers using subtraction operator
-
-        return 0.0;
-    }
-
-    public static String reverseWordsInString (String str) {
-        //ex8: Reverse the words in a sentence
-        //     e.g. sentence a in words the Reverse
-
-        return "";
-    }
-
-    public static boolean ckSubString (String str1, String str2) {
-        //ex9: check if str1 is a substring of str2
-
-        return false;
-    }
 
     public static int[] addOneToArrayValue(int[] digitArray) {
         //ex10: add one to the value of an array of single digit integers
