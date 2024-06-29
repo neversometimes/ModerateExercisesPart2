@@ -1,14 +1,22 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
+    public static int[][] testMaze = {{0, 0, 0},
+                                      {0, 1, 0},
+                                      {0, 0, 0}};  //test maze - 2 paths
+
 
     public static void main(String[] args) {
 
    //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
-        System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
+   //     System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
+
+          System.out.println(findNumOfAllPossiblePaths(testMaze));
+
     }
 
     public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
@@ -79,12 +87,116 @@ public class Main {
         return totalWays;
     }
 
-    public static int findNumOfAllPossiblePaths(int[] maze) {
-        //ex3: find all possible paths of an m x n matrix, starting from top left to bottom right
+    public static int findNumOfAllPossiblePaths(int[][] maze) {
+        //ex3: find all possible paths of a 2D matrix, starting from top left to bottom right
         //     matrix with '0' is open, '1' is blocked; moves are down or right only
+        // stack elements are the maze cell positions: ["x/y/dir"]
+        //     x: 1st cell param, y: 2nd cell param, dir: R-right, D-down, E-either, N-neither
 
-        return 0;
+        String cell = ""; String nextPts; String tmpStr;
+        Integer x=0, y=0, goal=0;
+
+        Stack<String> stack = new Stack<>();
+
+        // traverse the maze first pass
+
+        for (int i = 0; i <= maze.length; i++) {
+            cell = getCode(x, y, maze);     // getCode determines choices for current cell(x,y) in maze
+            System.out.println(cell);
+
+            nextPts = decode(cell);         // decode gets next cell's points
+            System.out.println(nextPts);
+
+            // parse x and y integers from nextPts string
+            tmpStr = "" + nextPts.charAt(0);
+            x = Integer.parseInt(tmpStr);
+            tmpStr = "" + nextPts.charAt(1);
+            y = Integer.parseInt(tmpStr);
+
+            // if x or y values reach maze.length-1, then goal reached
+            if ((x == maze.length-1) && (y == maze.length-1)) {
+                goal++;
+                System.out.println("goal: " + goal);
+            }
+        }
+
+
+
+
+
+
+        return -1;
     }
+
+    public static String getCode (Integer x, Integer y, int[][] mazeMap) {
+        int perim = mazeMap.length - 1;
+        String code = "N";  // default blocked
+        String sX = "", sY = "";
+
+        if ((x < perim) && (y < perim)) {  // check only up to the perimeter of the maze
+            if ((mazeMap[y][x + 1] == 0) && (mazeMap[y + 1][x] == 0)) {
+                code = "E";     // both R and D are 0
+                sX = x.toString();
+                sY = y.toString();
+            } else if (mazeMap[y][x + 1] == 0) {
+                code = "R";     // R is 0
+                sX = x.toString();
+                sY = y.toString();
+            } else if (mazeMap[y + 1][x] == 0) {
+                code = "D";     // D is 0
+                sX = x.toString();
+                sY = y.toString();
+            };
+        };
+
+        // if x == perim, then only check down direction
+        if ((x == perim) && (y <= perim)){
+            if (mazeMap[y+1][x] == 0){
+                code = "D";  // if down = 0
+                sX = x.toString();
+                sY = y.toString();
+            }
+        }
+
+        //if y == perim, then only check the right direction
+        if ((y == perim) && (x <= perim)) {
+            if (mazeMap[y][x+1] == 0){
+                code = "R";  // if right = 0
+                sX = x.toString();
+                sY = y.toString();
+            }
+        }
+       return sX + sY + code;
+    }
+
+    public static String decode (String codeStr) {
+
+        String points = "";
+        Integer x, y;
+        String s;
+
+        // if R or E, add one to x
+        if ((codeStr.charAt(2) == 'R')|| (codeStr.charAt(2) == 'E')) {
+            s = ""+codeStr.charAt(0);
+            x = Integer.parseInt(s);
+            x++;
+            points = x.toString() + codeStr.charAt(1);
+        }
+        // if D, add one to y
+        if (codeStr.charAt(2) == 'D') {
+            s = ""+codeStr.charAt(1);
+            y = Integer.parseInt(s);
+            y++;
+            points = codeStr.charAt(0) + y.toString();
+        }
+
+        return points;
+    }
+
+
+
+
+
 
     public static boolean checkAllDistinctChars (String str) {
         //ex4: check if a string has all distinct characters
