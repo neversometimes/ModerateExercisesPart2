@@ -5,9 +5,11 @@ import java.util.Stack;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
-    public static int[][] testMaze = {{0, 0, 0},
-                                      {0, 1, 0},
-                                      {0, 0, 0}};  //test maze - 2 paths
+    public static int[][] testMaze = {{0, 0, 0, 0, 0},
+                                      {0, 1, 0, 1, 0},
+                                      {0, 1, 0, 1, 0},
+                                      {0, 0, 0, 1, 0},
+                                      {1, 1, 0, 0, 0}};  //test maze - 3 paths
 
 
     public static void main(String[] args) {
@@ -15,7 +17,7 @@ public class Main {
    //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
    //     System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
 
-          System.out.println(findNumOfAllPossiblePaths(testMaze));
+          System.out.println("Number of Paths: " + findNumOfAllPossiblePaths(testMaze));
 
     }
 
@@ -88,24 +90,59 @@ public class Main {
     }
 
     public static int findNumOfAllPossiblePaths(int[][] maze) {
-        //ex3: find all possible paths of a 2D matrix, starting from top left to bottom right
+        //ex3: find all possible paths of a 2D NXN square matrix, starting from top left to bottom right
         //     matrix with '0' is open, '1' is blocked; moves are down or right only
         // stack elements are the maze cell positions: ["x/y/dir"]
         //     x: 1st cell param, y: 2nd cell param, dir: R-right, D-down, E-either, N-neither
 
-        String cell = ""; String nextPts; String tmpStr;
-        Integer x=0, y=0, goal=0;
+        String tmpStr = "";
+        Integer x=0, y=0, cheese=0;
 
         Stack<String> stack = new Stack<>();
+        stack.push("START");
 
-        // traverse the maze first pass
+        do {
 
-        for (int i = 0; i <= maze.length; i++) {
-            cell = getCode(x, y, maze);     // getCode determines choices for current cell(x,y) in maze
+            stack = traverseMaze(x, y, maze, stack);
+
+            while ((stack.peek().charAt(2) != 'E') && (!tmpStr.equals("START"))) {
+                stack.pop();
+                tmpStr = stack.peek();
+            }
+            //System.out.println(stack.peek());
+
+            if (stack.peek().equals("START")) {
+                break;
+            } else {
+                tmpStr = "" + stack.peek().charAt(0);
+                x = Integer.parseInt(tmpStr);           // parse x value from top of stack element
+                tmpStr = "" + stack.peek().charAt(1);
+                y = Integer.parseInt(tmpStr) + 1;        // incr y since down is only option after fork
+
+                tmpStr = stack.pop();                   // pops the fork cell off stack
+                tmpStr = tmpStr.substring(0, 2) + "D";  // replaces 'E' with 'D'
+                stack.push(tmpStr);                     // push back onto stack for next traversal
+
+                cheese++;
+            }
+
+        } while (!stack.peek().equals("START"));  // while top of stack isn't START
+
+        return cheese;  // return number of successful paths to the cheese!
+    }
+
+    public static Stack<String> traverseMaze(int x, int y, int[][] travMaze, Stack<String> pile) {
+        String tmpStr; String cell; String nextPts;
+        boolean goal=false;
+
+        while (!goal) {
+            cell = getCode(x, y, travMaze);     // getCode determines choices for current cell(x,y) in maze
             System.out.println(cell);
 
+            pile.push(cell);
+
             nextPts = decode(cell);         // decode gets next cell's points
-            System.out.println(nextPts);
+            //System.out.println(nextPts);
 
             // parse x and y integers from nextPts string
             tmpStr = "" + nextPts.charAt(0);
@@ -113,61 +150,14 @@ public class Main {
             tmpStr = "" + nextPts.charAt(1);
             y = Integer.parseInt(tmpStr);
 
-            // if x or y values reach maze.length-1, then goal reached
-            if ((x == maze.length-1) && (y == maze.length-1)) {
-                goal++;
-                System.out.println("goal: " + goal);
+            if ((x == travMaze.length-1) && (y == travMaze.length-1)){
+                goal = true;
             }
         }
+        return pile;
 
-
-
-
-
-
-        return -1;
     }
 
-    public static String getCode (Integer x, Integer y, int[][] mazeMap) {
-        int perim = mazeMap.length - 1;
-        String code = "N";  // default blocked
-        String sX = "", sY = "";
-
-        if ((x < perim) && (y < perim)) {  // check only up to the perimeter of the maze
-            if ((mazeMap[y][x + 1] == 0) && (mazeMap[y + 1][x] == 0)) {
-                code = "E";     // both R and D are 0
-                sX = x.toString();
-                sY = y.toString();
-            } else if (mazeMap[y][x + 1] == 0) {
-                code = "R";     // R is 0
-                sX = x.toString();
-                sY = y.toString();
-            } else if (mazeMap[y + 1][x] == 0) {
-                code = "D";     // D is 0
-                sX = x.toString();
-                sY = y.toString();
-            };
-        };
-
-        // if x == perim, then only check down direction
-        if ((x == perim) && (y <= perim)){
-            if (mazeMap[y+1][x] == 0){
-                code = "D";  // if down = 0
-                sX = x.toString();
-                sY = y.toString();
-            }
-        }
-
-        //if y == perim, then only check the right direction
-        if ((y == perim) && (x <= perim)) {
-            if (mazeMap[y][x+1] == 0){
-                code = "R";  // if right = 0
-                sX = x.toString();
-                sY = y.toString();
-            }
-        }
-       return sX + sY + code;
-    }
 
     public static String decode (String codeStr) {
 
@@ -192,6 +182,49 @@ public class Main {
 
         return points;
     }
+
+
+    public static String getCode (Integer x, Integer y, int[][] mazeMap) {
+        int perim = mazeMap.length - 1;
+        String code = "N";  // default blocked
+        String sX = "", sY = "";
+
+        if ((x < perim) && (y < perim)) {  // check only up to the perimeter of the maze
+            if ((mazeMap[y][x + 1] == 0) && (mazeMap[y + 1][x] == 0)) {
+                code = "E";     // both R and D are 0
+                sX = x.toString();
+                sY = y.toString();
+            } else if (mazeMap[y][x + 1] == 0) {
+                code = "R";     // R is 0
+                sX = x.toString();
+                sY = y.toString();
+            } else if (mazeMap[y + 1][x] == 0) {
+                code = "D";     // D is 0
+                sX = x.toString();
+                sY = y.toString();
+            };
+        };
+
+        // if x == perim, then only check down direction
+        if ((x == perim) && (y < perim)){
+            if (mazeMap[y+1][x] == 0){
+                code = "D";  // if down = 0
+                sX = x.toString();
+                sY = y.toString();
+            }
+        }
+
+        //if y == perim, then only check the right direction
+        if ((y == perim) && (x < perim)) {
+            if (mazeMap[y][x+1] == 0){
+                code = "R";  // if right = 0
+                sX = x.toString();
+                sY = y.toString();
+            }
+        }
+       return sX + sY + code;
+    }
+
 
 
 
