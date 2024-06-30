@@ -24,8 +24,15 @@ public class Main {
    //     System.out.println("1) All distinct 'abcdef123': " + checkAllDistinctChars("abcdef123"));
    //     System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
    //     System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
+   //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
+   //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
 
-System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
+    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
+    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
+    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
+
+
+
 
 
     } // Main
@@ -46,10 +53,53 @@ System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe"
     }
 
 // *******************************************************************************
-    public static double divideUsingSubtraction (int num1, int num2) {
-        //ex7: divide two integers using subtraction operator
+    public static String divideUsingSubtraction (Integer dividend, Integer divisor) {
+        //ex7: divide two integers using subtraction operator (no div - multiply ok);
+        //     one decimal accuracy; include negative integers and handle divide by zero error
+        //      note: use of '*' necessary to handle negative input
 
-        return 0.0;
+
+        System.out.print("Dividend:" + dividend + "  ");
+        System.out.println ("Divisor:" + divisor);
+
+        String q, f;    // string equivalents of integer values
+        Integer quotient = 0, fraction = 0;
+        boolean negOne = false;     //flag if need to add '-' to output
+
+        //  verify divisor > 0
+        if (divisor == 0) { return "Divide by 0 Error"; }  // punt on divide by zero nonsense
+
+        // manage negative values here
+        if ((dividend < 0) && (divisor < 0)) {
+            dividend *= -1;
+            divisor *= -1;
+        } else if (dividend < 0) {
+                    negOne = true;
+                    dividend *= -1;
+        } else if (divisor < 0) {
+                    negOne = true;
+                    divisor *= -1;
+        };
+
+        while (dividend >= divisor) {   // calculate quotient using subtraction
+            dividend -= divisor;
+            quotient++;
+        }
+
+        dividend *= 10;
+        while (dividend >= divisor) {   // calculate fraction using subtraction
+            dividend -= divisor;
+            fraction++;
+        }
+
+        q = quotient.toString();    // convert Integers to strings
+        f = fraction.toString();
+
+        if (negOne) {
+            return "-" + q + "." + f;
+        } else {
+            return q + "." + f;
+        }
     }
 
 // *******************************************************************************
