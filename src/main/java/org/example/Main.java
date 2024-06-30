@@ -3,6 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
@@ -27,11 +28,11 @@ public class Main {
    //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
    //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
 
-    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
-    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
-    //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
+   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
+   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
+   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
 
-
+        System.out.println("Result: " + reverseWords("Reverse the words in a sentence"));
 
 
 
@@ -45,11 +46,29 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static String reverseWordsInString (String str) {
+    public static String reverseWords (String str) {
         //ex8: Reverse the words in a sentence
         //     e.g. sentence a in words the Reverse
 
-        return "";
+        StringTokenizer tokenizer = new StringTokenizer(str, " ");
+        Stack<String> stack = new Stack<>();
+        String revStr=""; String space=" ";
+
+        System.out.println("String: " + str);
+
+        while (tokenizer.hasMoreElements()) {       // "tokenize" string and push onto stack
+            String word = tokenizer.nextToken();
+            //System.out.println(word);
+            stack.push(word);
+        }
+        while(!stack.isEmpty()) {               // pop words off stack in reverse order
+            if (stack.size() == 1) {            //  and concatenate to build result sentence
+                revStr += stack.pop();
+            } else {
+                revStr += stack.pop() + space;  // add spaces between words only
+            }
+        }
+        return revStr;
     }
 
 // *******************************************************************************
