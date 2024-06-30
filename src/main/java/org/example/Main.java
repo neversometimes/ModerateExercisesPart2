@@ -25,8 +25,7 @@ public class Main {
    //     System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
    //     System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
 
-
-
+System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
 
 
     } // Main
@@ -56,8 +55,26 @@ public class Main {
 // *******************************************************************************
     public static boolean checkSubstringPermutation(String str1, String str2) {
         //ex6: check if str1 is a permutation of str2
+        // My solution: ensure equal string lengths; then check str2 for every chr in str1
+        //      when true, remove that chr instance from str2.  If permutation is true,
+        //       str2 will be empty string "", confirming 1:1 chr correspondence
 
-        return true;
+        System.out.print("S1: " + str1 + "  ");
+        System.out.println("S2: " + str2);
+
+        boolean isSub = false;
+
+        if (str1.length() == str2.length()) {               // must have equal lengths if str1 is perm of str2
+
+            for (int i = 0; i < str1.length(); i++) {
+                if (str2.contains(str1.substring(i, i+1))) {
+                    str2 = str2.replace(str1.substring(i, i+1), "");
+                }
+            }
+            if (str2.isEmpty()) { isSub = true; }
+        }
+
+        return isSub;
     }
 
 // *******************************************************************************
@@ -68,7 +85,7 @@ public class Main {
         HashMap<String, Integer> hashmap = new HashMap<>();
 
         for (int i = 0; i < str.length(); i++) {
-            // is chr in hashmap as key?
+            // is chr a key in the hashmap?
             if (hashmap.containsKey (str.substring(i, i+1))) {
                 //replace existing key value = -1
                 hashmap.replace(str.substring(i, i+1), -1 );
@@ -128,7 +145,6 @@ public class Main {
         stack.push("START");
 
         do {
-
             stack = traverseMaze(x, y, maze, stack);
 
             // cheese calculating variables
@@ -316,16 +332,17 @@ public class Main {
         //  e.g. input: {10, 20, 10, 20, 30, 40, 40, 30, 50}   result: 50
 
         ArrayList<Integer> nonDuplicate = new ArrayList<>();
-        nonDuplicate.add(numbers[0]);                         // add first number in array to Nonduplicate ArrayList
 
-        for (int i = 1; i < numbers.length; i++) {      //  starting at 2nd number of array
-            if (nonDuplicate.contains(numbers[i])) {          // if the ArrayList has the number, remove it
-                nonDuplicate.remove(numbers[i]);
+        nonDuplicate.add(numbers[0]);           // add first number of given array to Nonduplicate ArrayList
+
+        for (int i = 1; i < numbers.length; i++) {      //  starting at 2nd number of given array
+            if (nonDuplicate.contains(numbers[i])) {          // if the non-duplicate list has the number,
+                nonDuplicate.remove(numbers[i]);                    //  remove it from the non-duplicate list
             } else {
-                nonDuplicate.add(numbers[i]);                 // else add it to the ArrayList
+                nonDuplicate.add(numbers[i]);                 // else add it to the non-duplicate list
             }
         }
-        return nonDuplicate;    // return the ArrayList containing the identified non-duplicate number
+        return nonDuplicate;    // return the non-duplicate list containing the only non-duplicate number
     }
 
 
