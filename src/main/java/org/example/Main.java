@@ -41,7 +41,6 @@ public class Main {
 
 
 
-
     }
 
 // *******************************************************************************
@@ -103,6 +102,10 @@ public class Main {
     public static boolean checkIsomorphicStrings (String str1, String str2) {
         //ex11: check if str1 is isomorphic with str2
         //      e.g. is abca isomorphic with abxz?  yes.
+
+
+
+
 
         return false;
     }
