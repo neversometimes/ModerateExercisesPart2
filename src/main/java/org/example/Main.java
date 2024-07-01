@@ -27,22 +27,120 @@ public class Main {
    //     System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
    //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
    //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
+   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
+   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
+   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
+   //     System.out.println("Result: " + reverseWords("Reverse the words in a sentence"));
+   //     System.out.println("Result: " + ckSubString("abc", "abuvxyzc"));
+   //     System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
+   //     System.out.println("Result: " + ckSubString("abc", "xyzabc"));
 
-   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
-   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
-   //    System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
-
-        System.out.println("Result: " + reverseWords("Reverse the words in a sentence"));
 
 
 
-    } // Main
+
+
+
+
+    }
+
+// *******************************************************************************
+    public static void twoCirclesTest() {
+        //ex17: given center points for two circles and their corresponding radii,
+        //       determine if the circle circumferences:  1) C1 is inside C2
+        //                                                2) C2 is inside C1
+        //                                                3) C1 and C2 circumferences intersect
+        //                                                3) C1 and C2 circumferences don't overlap
+        //                                                4) C1 and C2 overlap exactly (same circle)
+    }
+
+// *******************************************************************************
+    public static String stringCompression(String str) {
+        //ex16: given string with duplcate chars, remove and replace duplicates with dupe count
+        //   e.g.  given: "aaaabbbbcccccddddeeee"  result: "a4b4c5d4e4"
+
+        return "";
+    }
+
+// *******************************************************************************
+    public static void createSpiralMatrix(int n) {
+        //ex15: create a square 2D matrix of size n x n with increasing values in spiral
+        //
+        //   e.g. n=4  expected output:   {1,  2,  3,  4,
+        //                                12, 13, 14,  5,
+        //                                11, 16, 15,  6,
+        //                                10,  9,  8,  7}
+    }
+
+// *******************************************************************************
+    public static int[][] findNumInMatrix(int num, int[][] matrix) {
+        //ex14: given an 2D MxN matrix and number value, find all instances of that value in the matrix
+        //   e.g. given: n= 3 and {2, 3, 5,    result: [(0,2), (1,0), (2,1)]  (row, column)
+        //                         3, 2, 1,
+        //                         1, 3, 5}
+
+        return matrix;
+    }
+
+// *******************************************************************************
+    public static String orderAlphaSumNums(String str) {
+        //ex13: given string with mixed alpha(uppercase)/numeric chars,
+        //      order alpha, sum num and append to alpha string
+        //    e.g. given: "AND456HSE8"  result: "ADEHNS23"  (4+5+6+8 = 23)
+
+        return "";
+    }
+
+// *******************************************************************************
+    public static int[] findAnagramIndices(String baseStr, String anagram) {
+        //ex12: find the indices of all of the instances of anagram within baseStr
+        //     e.g. baseStr:"zyxwyxyxzxyz"  result indices: [0, 6, 10]
+
+        return new int[]{0,0};
+    }
+
+// *******************************************************************************
+    public static boolean checkIsomorphicStrings (String str1, String str2) {
+        //ex11: check if str1 is isomorphic with str2
+        //      e.g. is abca isomorphic with abxz?  yes.
+
+        return false;
+    }
+
+// *******************************************************************************
+    public static int[] addOneToArrayValue(int[] digitArray) {
+        //ex10: add one to the value of an array of single digit integers
+        //    e.g. given: [9, 9, 9] result: [1, 0, 0, 0]
+
+        return digitArray;
+    }
 
 // *******************************************************************************
     public static boolean ckSubString (String str1, String str2) {
         //ex9: check if str1 is a substring of str2
+        //     **  rewrite "str2.contains(str1)"  **
 
-        return false;
+        System.out.println();
+        System.out.println("Str1: " + str1);    // print out input values
+        System.out.println("Str2: " + str2);
+
+        int ptr1=0, ptr2=0;  // string pointers
+
+        // failfast - not a substring if str1 longer than str2
+        if ( str1.length() > str2.length()) { return false; }
+
+        while (ptr2 < str2.length()){               // loop boundary is length of str2
+            if (str1.charAt(ptr1) == str2.charAt(ptr2)) {
+                ptr1++;                 // if chars in strings are equal, advance ptr1 only
+            } else {
+                ptr1 = 0;               // else return ptr1 to 0 index
+            }
+            if (ptr1 >= str1.length()) { // if ptr1 past last chr in str1, str1 is a substring
+                return true;
+            }
+            ptr2++;                     // advance ptr2
+        }
+        return false;       // default is false
     }
 
 // *******************************************************************************
@@ -54,16 +152,16 @@ public class Main {
         Stack<String> stack = new Stack<>();
         String revStr=""; String space=" ";
 
-        System.out.println("String: " + str);
+        System.out.println("String: " + str);       // input string
 
-        while (tokenizer.hasMoreElements()) {       // "tokenize" string and push onto stack
+        while (tokenizer.hasMoreElements()) {       // "tokenize" string and push onto a stack
             String word = tokenizer.nextToken();
             //System.out.println(word);
             stack.push(word);
         }
-        while(!stack.isEmpty()) {               // pop words off stack in reverse order
-            if (stack.size() == 1) {            //  and concatenate to build result sentence
-                revStr += stack.pop();
+        while(!stack.isEmpty()) {               // pop words off stack (is in reverse order)
+            if (stack.size() == 1) {            //  and concatenate to build result
+                revStr += stack.pop();          //  reversed sentence
             } else {
                 revStr += stack.pop() + space;  // add spaces between words only
             }
@@ -373,7 +471,7 @@ public class Main {
             if (!tries.contains(1)) { break; }
 
             // clone original arraylist to permutate traversal cases
-            ArrayList<Integer> permutate = (ArrayList<Integer>)tries.clone();
+            ArrayList<Integer> permutate = (ArrayList<Integer>) tries.clone();
 
             // create permutations
             for (int j = 0; j < permutate.size() - 1; j++) {
@@ -412,76 +510,6 @@ public class Main {
             }
         }
         return nonDuplicate;    // return the non-duplicate list containing the only non-duplicate number
-    }
-
-
-
-
-
-
-
-
-    public static int[] addOneToArrayValue(int[] digitArray) {
-        //ex10: add one to the value of an array of single digit integers
-        //    e.g. given: [9, 9, 9] result: [1, 0, 0, 0]
-
-        return digitArray;
-    }
-
-    public static boolean checkIsomorphicStrings (String str1, String str2) {
-        //ex11: check if str1 is isomorphic with str2
-        //      e.g. is abca isomorphic with abxz?  yes.
-
-        return false;
-    }
-
-    public static int[] findAnagramIndices(String baseStr, String anagram) {
-        //ex12: find the indices of all of the instances of anagram within baseStr
-        //     e.g. baseStr:"zyxwyxyxzxyz"  result indices: [0, 6, 10]
-
-        return new int[]{0,0};
-    }
-
-    public static String orderAlphaSumNums(String str) {
-        //ex13: given string with mixed alpha(uppercase)/numeric chars,
-        //      order alpha, sum num and append to alpha string
-        //    e.g. given: "AND456HSE8"  result: "ADEHNS23"  (4+5+6+8 = 23)
-
-        return "";
-    }
-
-    public static int[][] findNumInMatrix(int num, int[][] matrix) {
-        //ex14: given an 2D MxN matrix and number value, find all instances of that value in the matrix
-        //   e.g. given: n= 3 and {2, 3, 5,    result: [(0,2), (1,0), (2,1)]  (row, column)
-        //                         3, 2, 1,
-        //                         1, 3, 5}
-
-        return matrix;
-    }
-
-    public static void createSpiralMatrix(int n) {
-        //ex15: create a square 2D matrix of size n x n with increasing values in spiral
-        //
-        //   e.g. n=4  expected output:   {1,  2,  3,  4,
-        //                                12, 13, 14,  5,
-        //                                11, 16, 15,  6,
-        //                                10,  9,  8,  7}
-    }
-
-    public static String stringCompression(String str) {
-        //ex16: given string with duplcate chars, remove and replace duplicates with dupe count
-        //   e.g.  given: "aaaabbbbcccccddddeeee"  result: "a4b4c5d4e4"
-
-        return "";
-    }
-
-    public static void twoCirclesTest() {
-        //ex17: given center points for two circles and their corresponding radii,
-        //       determine if the circle circumferences:  1) C1 is inside C2
-        //                                                2) C2 is inside C1
-        //                                                3) C1 and C2 circumferences intersect
-        //                                                3) C1 and C2 circumferences don't overlap
-        //                                                4) C1 and C2 overlap exactly (same circle)
     }
 
 }
