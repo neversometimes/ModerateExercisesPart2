@@ -15,7 +15,7 @@ public class Main {
                                       {0, 1, 0, 1, 0, 1, 1, 0},
                                       {0, 1, 1, 0, 1, 1, 1, 0},
                                       {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
-
+    public static int[] intAsArray = {9, 9, 9, 9};
 
     public static void main(String[] args) {
 
@@ -35,7 +35,7 @@ public class Main {
    //     System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
    //     System.out.println("Result: " + ckSubString("abc", "xyzabc"));
 
-
+   //     addOneToArrayValue(intAsArray);
 
 
 
@@ -108,11 +108,38 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static int[] addOneToArrayValue(int[] digitArray) {
+    public static void addOneToArrayValue(int[] digitArray) {
         //ex10: add one to the value of an array of single digit integers
         //    e.g. given: [9, 9, 9] result: [1, 0, 0, 0]
 
-        return digitArray;
+        System.out.print("Given Int Array:");
+        for (int h : digitArray) {                  // print out input array
+            System.out.print(h);
+        }
+
+        Integer intVal = 0; int ten = 1;
+        String tmpNumStr, tmpIntStr;
+
+        for (int i = digitArray.length -1 ; i >= 0; i--) {  // start at end of array
+            intVal += digitArray[i] * ten;                  // multiply int value x 10
+            ten *= 10;                                      // update digit multiplier
+        }
+
+        intVal++;                               // add one to Num value
+        tmpNumStr = intVal.toString();          // convert Num Integer back to String
+
+        int[] arrayPlusOne = new int[tmpNumStr.length()];       //  set output array size = Num string length
+
+        for (int j = 0; j < tmpNumStr.length(); j++) {          //
+            tmpIntStr = "" + tmpNumStr.charAt(j);           // the '+' makes the single chr a str
+            arrayPlusOne[j] = Integer.parseInt(tmpIntStr);  // set values in Int array
+        }
+
+        System.out.print("   +1 Result:");
+        for (int k : arrayPlusOne) {            // print out result array
+            System.out.print(k);
+        }
+        System.out.println();
     }
 
 // *******************************************************************************
