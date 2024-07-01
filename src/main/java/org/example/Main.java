@@ -17,6 +17,9 @@ public class Main {
                                       {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
     public static int[] intAsArray = {9, 9, 9, 9};
 
+
+
+
     public static void main(String[] args) {
 
    //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
@@ -37,8 +40,8 @@ public class Main {
 
    //     addOneToArrayValue(intAsArray);
 
-
-
+            System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
+            System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
 
 
     }
@@ -99,15 +102,36 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static boolean checkIsomorphicStrings (String str1, String str2) {
-        //ex11: check if str1 is isomorphic with str2
-        //      e.g. is abca isomorphic with abxz?  yes.
+    public static boolean checkIsomorphic (CharSequence cs1, CharSequence cs2) {
+        //ex11: check if cs1 and cs2 are isomorphic
+        //      isomorphic means each char in cs1 has an exclusive 1:1 correspondence with the same
+        //      char in cs2 for every instance and location of those chars in both strings
+        //      e.g. cs1: abca  cs2: abxa   Isomorphic? result: yes.
+        //        cs1: abcbcac  cs2: xfgfgxg   Isomorphic? result: yes.
+        //        cs1: abcbacgg  cs2: nprpndbb     Isomorphic? result: no. 'c' mapped to 'r' and 'd'
 
+        System.out.print("cs1: " + cs1 + "   ");
+        System.out.print("cs2: " + cs2 + "   ");
 
+        // create hashmap with key value pairs <char,char>
+        HashMap<Character, Character> hashMap = new HashMap<>();
 
+        // lengths of strings must be equal to be considered Isomorphic
+        if (cs1.length() != cs2.length()) { return false; }
 
+        hashMap.put(cs1.charAt(0), cs2.charAt(0));       // add first two <key,value> pair from input
 
-        return false;
+        for (int i = 1; i < cs1.length(); i++) {
+            if (hashMap.containsKey(cs1.charAt(i))) {               // if this cs1 char in hashmap
+                if (cs2.charAt(i) != hashMap.get(cs1.charAt(i))) {    // if cs2 char NOT same as mapped cs1 value
+                        return false;                               // cs1 and cs2 are not Isomorphic
+                }
+            } else {
+                hashMap.put(cs1.charAt(i), cs2.charAt(i));    // add cs1,cs2 chars as <key,value> pair in hashmap
+            }
+        }
+
+        return true;
     }
 
 // *******************************************************************************
