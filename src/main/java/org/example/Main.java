@@ -14,9 +14,6 @@ public class Main {
                                       {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
     public static int[] intAsArray = {9, 9, 9, 9};
 
-
-
-
     public static void main(String[] args) {
 
    //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
@@ -35,10 +32,14 @@ public class Main {
    //     System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
    //     System.out.println("Result: " + ckSubString("abc", "xyzabc"));
    //     addOneToArrayValue(intAsArray);
-   //         System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
-   //         System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
+   //     System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
+   //     System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
+   //     System.out.println("Anagram Indices: " + findAnagramIndices("zyxwyxywxzxyz", "wxyz"));
+   //     System.out.println("Result: " + orderAlphaSumNums("AND456HSE8"));
+   //     System.out.println("Result: " + orderAlphaSumNums("99ZZD4H8SXE8"));
+   //     System.out.println("Result: " + orderAlphaSumNums("ZYXCBA"));
+   //     System.out.println("Result: " + orderAlphaSumNums("9328471"));
 
-        System.out.println("Anagram Indices: " + findAnagramIndices("zyxwyxywxzxyz", "wxyz"));
 
 
 
@@ -73,13 +74,16 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static int[][] findNumInMatrix(int num, int[][] matrix) {
+    public static void findNumInMatrix(int num, int[][] matrix) {
         //ex14: given an 2D MxN matrix and number value, find all instances of that value in the matrix
-        //   e.g. given: n= 3 and {2, 3, 5,    result: [(0,2), (1,0), (2,1)]  (row, column)
+        //   e.g. given: n= 3 and {2, 3, 5,    result: [(1,0), (0,1), (1,2)]  (row, column)
         //                         3, 2, 1,
         //                         1, 3, 5}
 
-        return matrix;
+
+      for (int i =0; i < matrix.length; i++)
+
+
     }
 
 // *******************************************************************************
@@ -88,7 +92,41 @@ public class Main {
         //      order alpha, sum num and append to alpha string
         //    e.g. given: "AND456HSE8"  result: "ADEHNS23"  (4+5+6+8 = 23)
 
-        return "";
+        System.out.print("Given: " + str + "   ");
+
+        ArrayList<Character> numList = new ArrayList<>();
+        ArrayList<Character> alphaList = new ArrayList<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if ((c >= '0') && (c <= '9')){
+                numList.add(c);             // create list of numbers
+            }else {
+                alphaList.add(c);           // create list of alpha chars
+            }
+        }
+
+        Collections.sort(alphaList);        // sort the alphaList
+
+        Integer sumInt=0;
+        for (char c: numList) {
+            Integer tmpInt = Integer.parseInt("" + c);
+            sumInt += tmpInt;
+        }
+
+        String sumStr = String.valueOf(sumInt);
+        if (sumStr.equals("0")) {
+            sumStr = "";
+        }
+
+        String acc="";
+        for (char c: alphaList) {
+            String tmpStr = String.valueOf(c);
+            acc += tmpStr;
+        }
+                 //System.out.println(sumStr);
+                 //System.out.println(numList);
+        return acc+sumStr;
     }
 
 // *******************************************************************************
