@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
@@ -37,11 +34,12 @@ public class Main {
    //     System.out.println("Result: " + ckSubString("abc", "abuvxyzc"));
    //     System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
    //     System.out.println("Result: " + ckSubString("abc", "xyzabc"));
-
    //     addOneToArrayValue(intAsArray);
+   //         System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
+   //         System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
 
-            System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
-            System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
+        System.out.println("Anagram Indices: " + findAnagramIndices("zyxwyxywxzxyz", "wxyz"));
+
 
 
     }
@@ -94,11 +92,60 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static int[] findAnagramIndices(String baseStr, String anagram) {
-        //ex12: find the indices of all of the instances of anagram within baseStr
-        //     e.g. baseStr:"zyxwyxyxzxyz"  result indices: [0, 6, 10]
+    public static List<Integer> findAnagramIndices(String baseStr, String anagram) {
+        //ex12: find indices of all instances of given anagram within given baseStr
+        //     e.g. baseStr: zyxwyxywxzxyz anagram: wxyz   result: indices: [0, 6]
 
-        return new int[]{0,0};
+        System.out.print("Anagram Str: " + anagram);
+        System.out.println("   Base Str: " + baseStr);
+
+        List<String> permList;
+        List<Integer> indicesList = new ArrayList<>();
+
+        permList = getPermutationList(anagram);     // get the set of permutations for anagram string
+        System.out.println("Anagram Permutations: " + permList);
+
+        for (String perm: permList) {               // for each permutation in permList
+            if (baseStr.contains(perm)) {               // if that permutation is found in baseStr
+                indicesList.add(baseStr.indexOf(perm));     //  add it to the indices list
+            }
+        }
+
+        return indicesList;
+    }
+
+    public static List<String> getPermutationList(String str) {
+        // base case
+        if (str == null || str.isEmpty()) {
+            return null;
+        }
+
+        // create an empty ArrayList to store (partial) permutations
+        List<String> partial = new ArrayList<>();
+
+        // initialize the list with the first character of the string
+        partial.add(String.valueOf(str.charAt(0)));
+
+        // do for every character of the specified string
+        for (int i = 1; i < str.length(); i++) {
+            // consider previously constructed partial permutation one by one
+
+            // (iterate backward to avoid ConcurrentModificationException)
+            for (int j = partial.size() - 1; j >= 0; j--) {
+                // remove current partial permutation from the ArrayList
+                String s = partial.remove(j);
+
+                // Insert the next character of the specified string at all
+                // possible positions of current partial permutation. Then
+                // insert each of these newly constructed strings in the list
+
+                for (int k = 0; k <= s.length(); k++) {
+                    // Advice: use StringBuilder for concatenation
+                    partial.add(s.substring(0, k) + str.charAt(i) + s.substring(k));
+                }
+            }
+        }
+        return partial;
     }
 
 // *******************************************************************************
