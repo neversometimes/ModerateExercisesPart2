@@ -50,6 +50,8 @@ public class Main {
    //     createSpiralMatrix(3);
    //     createSpiralMatrix(4);
    //     createSpiralMatrix(7);
+   //     System.out.println(stringCompression("ZxxxxbbbbXddddYeeeeccccc"));
+
 
 
     }
@@ -67,9 +69,28 @@ public class Main {
 // *******************************************************************************
     public static String stringCompression(String str) {
         //ex16: given string with duplcate chars, remove and replace duplicates with dupe count
-        //   e.g.  given: "aaaabbbbcccccddddeeee"  result: "a4b4c5d4e4"
+        //   e.g.  given: "ZxxxxbbbbXddddYeeeeccccc"  result: "Zx4b4Xd4Ye4c5"
 
-        return "";
+        String outStr=""; Integer cntr=1; char chr2;
+
+        for (int i=0; i< str.length(); i++) {
+            if (i < str.length() - 1) {         // this check protects reading past input str length
+                chr2 = str.charAt(i + 1);
+            } else {
+                chr2 = '\0';
+            }
+
+            if (str.charAt(i) == chr2) {    //checks for successive chars in the string
+                cntr++;                     // increment chr counter
+            } else {
+                outStr += str.charAt(i);    // append char to output string
+                if (cntr > 1) {                 // only add lengths > 1 to output string
+                    outStr += cntr.toString();
+                }
+                cntr = 1;       // reset repeat char counter
+            }
+        }
+        return outStr;
     }
 
 // *******************************************************************************
@@ -116,23 +137,24 @@ public class Main {
             carY = subList.getLast();
             if (resultList.size()== sqr) { break; }
         }
-        // at this point, the resultlist contains all of the points of the spiral
+        // at this point, the resultlist contains all of the points of the spiral in sequence
         //     (in clockwise order starting from 0,0)
 
         for (int i=0; i < sqr; i++) {
-            subList = resultList.get(i);    //for each (x,y) point element in the resultList
+            subList = resultList.get(i);    // at each (x,y)-point element in the resultList
             carX = subList.getFirst();
             carY = subList.getLast();
-            matrix[carY][carX] = i+1;   //add the spiral cell value(i + 1) to the cell matrix at point Y,X
+            matrix[carY][carX] = i+1;   //add the corresponding cell value(i + 1) to the 2D matrix
         }
 
-        for (int[] row : matrix) {              // print out the spiral matrix, by row
+        for (int[] row : matrix) {              // print out the 2D spiral matrix values, by row
             System.out.println(Arrays.toString(row));
         }
         System.out.println();
     }
+
     //  ********************************************************************************************
-    // These static methods incrX(), incrY(), decrX(), decrY(), generate the cell(x,y) points by
+    // The below static methods incrX(), incrY(), decrX(), decrY(), generate the cell(x,y) points by
     //  incrementing/decrementing each side of the matrix where the passed in point x or y will
     //  necessarily increase or decrease to generate the spiral effect. Once calculated, each point
     //  pair(x,y) is added to the resultList for later processing to generate the spiral matrix.
