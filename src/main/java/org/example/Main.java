@@ -13,6 +13,9 @@ public class Main {
                                       {0, 1, 1, 0, 1, 1, 1, 0},
                                       {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
     public static int[] intAsArray = {9, 9, 9, 9};
+    public static int[][] matrix = {{2, 3, 5},
+                                    {3, 2, 1},
+                                    {1, 3, 5}};
 
     public static void main(String[] args) {
 
@@ -40,7 +43,10 @@ public class Main {
    //     System.out.println("Result: " + orderAlphaSumNums("ZYXCBA"));
    //     System.out.println("Result: " + orderAlphaSumNums("9328471"));
 
-
+   //     findNumInMatrix(3, matrix);
+   //     findNumInMatrix(5, matrix);
+   //     findNumInMatrix(2, matrix);
+   //     findNumInMatrix(7, matrix);
 
 
     }
@@ -80,10 +86,24 @@ public class Main {
         //                         3, 2, 1,
         //                         1, 3, 5}
 
+        System.out.println("Given number to find in matrix: " + num);
 
-      for (int i =0; i < matrix.length; i++)
+        LinkedList<LinkedList<Integer>> resultList = new LinkedList<>();
 
-
+        for (int i=0; i < matrix.length; i++) {
+            for (int j=0; j < matrix.length; j++) {
+                if (matrix[i][j] == num) {                      // if the number is found:
+                    LinkedList<Integer> subList = new LinkedList<>(); // create new subList object
+                    subList.add(j); subList.add(i);     // add the values to the subList
+                    resultList.add(subList);        // add the subList to the resultList
+                }
+            }
+        }
+        if (resultList.isEmpty()) {
+            System.out.println("Number " + num + " not found.");
+        } else {
+            System.out.println("Result Found Cells[m,n]: " + resultList);
+        }
     }
 
 // *******************************************************************************
