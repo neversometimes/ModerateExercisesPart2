@@ -42,11 +42,14 @@ public class Main {
    //     System.out.println("Result: " + orderAlphaSumNums("99ZZD4H8SXE8"));
    //     System.out.println("Result: " + orderAlphaSumNums("ZYXCBA"));
    //     System.out.println("Result: " + orderAlphaSumNums("9328471"));
-
    //     findNumInMatrix(3, matrix);
    //     findNumInMatrix(5, matrix);
    //     findNumInMatrix(2, matrix);
    //     findNumInMatrix(7, matrix);
+   //     createSpiralMatrix(2);
+   //     createSpiralMatrix(3);
+   //     createSpiralMatrix(4);
+   //     createSpiralMatrix(7);
 
 
     }
@@ -70,14 +73,107 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static void createSpiralMatrix(int n) {
+    public static void createSpiralMatrix(int size) {
         //ex15: create a square 2D matrix of size n x n with increasing values in spiral
         //
-        //   e.g. n=4  expected output:   {1,  2,  3,  4,
-        //                                12, 13, 14,  5,
-        //                                11, 16, 15,  6,
-        //                                10,  9,  8,  7}
+        //   e.g. n=4  expected output:   {{1,  2,  3,  4},
+        //                                {12, 13, 14,  5},
+        //                                {11, 16, 15,  6},
+        //                                {10,  9,  8,  7}};
+
+
+        int[][] matrix = new int[size][size];
+        LinkedList<LinkedList<Integer>> resultList = new LinkedList<>();
+        LinkedList<Integer> subList = new LinkedList<>();
+
+        int carX= -1;  int carY= 0;             // carry forward cell x,y points
+        int sqr = size * size;
+        boolean moreSides = true;
+
+        while (moreSides) { // while loop breaks when pair(x,y) point count equals matrix size*size
+
+            resultList = incrX(carX, carY, size, resultList);
+            subList = resultList.getLast();         // the last points in list carry forward to next method
+            carX = subList.getFirst();
+            carY = subList.getLast();
+            if (resultList.size()== sqr) { break; }    // break if last cell found
+
+            resultList = incrY(carX, carY, --size, resultList); //size of sublist reduced
+            subList = resultList.getLast();
+            carX = subList.getFirst();
+            carY = subList.getLast();
+            if (resultList.size()== sqr) { break; }
+
+            resultList = decrX(carX, carY, size, resultList);
+            subList = resultList.getLast();
+            carX = subList.getFirst();
+            carY = subList.getLast();
+            if (resultList.size()== sqr) { break; }
+
+            resultList = decrY(carX, carY, --size, resultList);  //size of sublist reduced
+            subList = resultList.getLast();
+            carX = subList.getFirst();
+            carY = subList.getLast();
+            if (resultList.size()== sqr) { break; }
+        }
+        // at this point, the resultlist contains all of the points of the spiral
+        //     (in clockwise order starting from 0,0)
+
+        for (int i=0; i < sqr; i++) {
+            subList = resultList.get(i);    //for each (x,y) point element in the resultList
+            carX = subList.getFirst();
+            carY = subList.getLast();
+            matrix[carY][carX] = i+1;   //add the spiral cell value(i + 1) to the cell matrix at point Y,X
+        }
+
+        for (int[] row : matrix) {              // print out the spiral matrix, by row
+            System.out.println(Arrays.toString(row));
+        }
+        System.out.println();
     }
+    //  ********************************************************************************************
+    // These static methods incrX(), incrY(), decrX(), decrY(), generate the cell(x,y) points by
+    //  incrementing/decrementing each side of the matrix where the passed in point x or y will
+    //  necessarily increase or decrease to generate the spiral effect. Once calculated, each point
+    //  pair(x,y) is added to the resultList for later processing to generate the spiral matrix.
+
+    public static LinkedList<LinkedList<Integer>> incrX (int xPt, int yPt, int len,
+                                                         LinkedList<LinkedList<Integer>> bigList) {
+        for (int i = 0; i < len; i++) {
+            LinkedList<Integer> cells = new LinkedList<>();
+            cells.add(++xPt); cells.add(yPt);
+            bigList.add(cells);
+        }
+        return bigList;
+    }
+    public static LinkedList<LinkedList<Integer>> incrY (int xPt, int yPt, int len,
+                                                         LinkedList<LinkedList<Integer>> bigList) {
+        for (int i=0; i < len; i++){
+            LinkedList<Integer> cells = new LinkedList<>();
+            cells.add(xPt); cells.add(++yPt);
+            bigList.add(cells);
+        }
+        return bigList;
+    }
+    public static LinkedList<LinkedList<Integer>> decrX (int xPt, int yPt, int len,
+                                                         LinkedList<LinkedList<Integer>> bigList) {
+        for (int i=len; i > 0; i--){
+            LinkedList<Integer> cells = new LinkedList<>();
+            cells.add(--xPt); cells.add(yPt);
+            bigList.add(cells);
+        }
+        return bigList;
+    }
+    public static LinkedList<LinkedList<Integer>> decrY (int xPt, int yPt, int len,
+                                                         LinkedList<LinkedList<Integer>> bigList) {
+        for (int i=len; i > 0; i--){
+            LinkedList<Integer> cells = new LinkedList<>();
+            cells.add(xPt); cells.add(--yPt);
+            bigList.add(cells);
+        }
+        return bigList;
+    }
+
 
 // *******************************************************************************
     public static void findNumInMatrix(int num, int[][] matrix) {
