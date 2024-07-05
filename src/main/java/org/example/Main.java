@@ -5,6 +5,7 @@ import java.lang.Math;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
+
     public static int[][] testMaze = {{0, 0, 0, 0, 0, 0, 0, 0},
                                       {0, 0, 1, 0, 1, 0, 1, 1},
                                       {0, 1, 0, 0, 0, 0, 0, 0},
@@ -12,11 +13,14 @@ public class Main {
                                       {0, 0, 0, 0, 0, 0, 0, 0},
                                       {0, 1, 0, 1, 0, 1, 1, 0},
                                       {0, 1, 1, 0, 1, 1, 1, 0},
-                                      {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 4 solutions
+                                      {0, 0, 0, 0, 0, 0, 1, 0}};  //test maze - 5 solutions
+
     public static int[] intAsArray = {9, 9, 9, 9};
+
     public static int[][] matrix = {{2, 3, 5},
                                     {3, 2, 1},
                                     {1, 3, 5}};
+
     public static int[] circle1 = {2, 2, 1};    // center:(2,2) radius:1    no intersect, 1 inside 2
     public static int[] circle2 = {2, 2, 4};    // center:(2,2) radius:4
     public static int[] circle3 = {5, 3, 2};    // center:(5,3) radius:2    intersect one point
@@ -560,7 +564,7 @@ public class Main {
         } else if (divisor < 0) {
                     negOne = true;
                     divisor *= -1;
-        };
+        }
 
         while (dividend >= divisor) {   // calculate quotient using subtraction
             dividend -= divisor;
@@ -770,7 +774,7 @@ public class Main {
     public static String getCode (Integer x, Integer y, int[][] mazeMap) {
         int perim = mazeMap.length - 1;
         String code = "N";  // default blocked
-        String sX = "", sY = "";
+        String sX, sY;
 
         if ((x < perim) && (y < perim)) {  // check only up to the perimeter of the maze
             if ((mazeMap[y][x + 1] == 0) && (mazeMap[y + 1][x] == 0)) {
@@ -781,8 +785,8 @@ public class Main {
             } else if (mazeMap[y + 1][x] == 0) {
                 code = "D";     // D is 0
 
-            };
-        };
+            }
+        }
 
         // if x == perim, then only check down direction
         if ((x == perim) && (y < perim)){
