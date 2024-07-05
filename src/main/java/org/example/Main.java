@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.lang.Math;
 
 public class Main {
     public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
@@ -16,70 +17,151 @@ public class Main {
     public static int[][] matrix = {{2, 3, 5},
                                     {3, 2, 1},
                                     {1, 3, 5}};
+    public static int[] circle1 = {2, 2, 1};    // center:(2,2) radius:1    no intersect, 1 inside 2
+    public static int[] circle2 = {2, 2, 4};    // center:(2,2) radius:4
+    public static int[] circle3 = {5, 3, 2};    // center:(5,3) radius:2    intersect one point
+    public static int[] circle4 = {5, 9, 4};    // center:(5,9) radius:4
+    public static int[] circle5 = {5, 4, 2};    // center:(5,4) radius:2    intersect one point, 1 inside 2
+    public static int[] circle6 = {5, 6, 4};    // center:(5,6) radius:4
+    public static int[] circle7 = {0, 0, 1};    // center:(1,1) radius:1    intersect at two points
+    public static int[] circle8 = {0, 2, 2};    // center:(0,2) radius:2
+    public static int[] circle9 = {1, 1, 1};    //  use as both circles - same circle
 
     public static void main(String[] args) {
 
-   //     System.out.println (findSingleOccurrence(duplicatesArray)); //prints single instance number of array
-   //     System.out.println("Distinct Traversals: " + distinctStairTraversals(6));   // expect: 11
-   //     System.out.println("Number of Paths: " + findNumOfAllPossiblePaths(testMaze));
-   //     System.out.println("1) All distinct 'abcdef123': " + checkAllDistinctChars("abcdef123"));
-   //     System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
-   //     System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
-   //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
-   //     System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
-   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
-   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
-   //     System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
-   //     System.out.println("Result: " + reverseWords("Reverse the words in a sentence"));
-   //     System.out.println("Result: " + ckSubString("abc", "abuvxyzc"));
-   //     System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
-   //     System.out.println("Result: " + ckSubString("abc", "xyzabc"));
-   //     addOneToArrayValue(intAsArray);
-   //     System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
-   //     System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
-   //     System.out.println("Anagram Indices: " + findAnagramIndices("zyxwyxywxzxyz", "wxyz"));
-   //     System.out.println("Result: " + orderAlphaSumNums("AND456HSE8"));
-   //     System.out.println("Result: " + orderAlphaSumNums("99ZZD4H8SXE8"));
-   //     System.out.println("Result: " + orderAlphaSumNums("ZYXCBA"));
-   //     System.out.println("Result: " + orderAlphaSumNums("9328471"));
-   //     findNumInMatrix(3, matrix);
-   //     findNumInMatrix(5, matrix);
-   //     findNumInMatrix(2, matrix);
-   //     findNumInMatrix(7, matrix);
-   //     createSpiralMatrix(2);
-   //     createSpiralMatrix(3);
-   //     createSpiralMatrix(4);
-   //     createSpiralMatrix(7);
-   //     System.out.println(stringCompression("ZxxxxbbbbXddddYeeeeccccc"));
+        System.out.println ("Result - single instance: " + findSingleOccurrence(duplicatesArray));
+        System.out.println();
 
+        System.out.println("Distinct Traversal Combinations: " + distinctStairTraversals(6));   // expect: 11
+        System.out.println();
 
+        System.out.println("Number of Unique Paths through test maze: " + findNumOfAllPossiblePaths(testMaze));
+        System.out.println();
+
+        System.out.println("1) All distinct 'abcdef123': " + checkAllDistinctChars("abcdef123"));
+        System.out.println("2) All distinct 'abcdef123d': " + checkAllDistinctChars("abcdef123d"));
+        System.out.println();
+
+        System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
+        System.out.println();
+
+        System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
+        System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
+        System.out.println();
+
+        System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
+        System.out.println("Div by Subt Result: " + divideUsingSubtraction(24, 0));
+        System.out.println("Div by Subt Result: " + divideUsingSubtraction(-225, -25));
+        System.out.println();
+
+        System.out.println("Result: " + reverseWords("Reverse the words in a sentence"));
+        System.out.println();
+
+        System.out.println("Result: " + ckSubString("abc", "abuvxyzc"));
+        System.out.println("Result: " + ckSubString("abc",  "abcxyz"));
+        System.out.println("Result: " + ckSubString("abc", "xyzabc"));
+        System.out.println();
+
+        addOneToArrayValue(intAsArray);
+        System.out.println();
+
+        System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbnxx1r"));  // should be true
+        System.out.println("Isomorphic: " + checkIsomorphic("welnwvvol", "ntrbcxx1r"));  // should be false
+        System.out.println();
+
+        System.out.println("Anagram Indices: " + findAnagramIndices("zyxwyxywxzxyz", "wxyz"));
+        System.out.println();
+
+        System.out.println("Result: " + orderAlphaSumNums("AND456HSE8"));
+        System.out.println("Result: " + orderAlphaSumNums("99ZZD4H8SXE8"));
+        System.out.println("Result: " + orderAlphaSumNums("ZYXCBA"));
+        System.out.println("Result: " + orderAlphaSumNums("9328471"));
+        System.out.println();
+
+        findNumInMatrix(3, matrix);
+        findNumInMatrix(5, matrix);
+        findNumInMatrix(2, matrix);
+        findNumInMatrix(7, matrix);
+        System.out.println();
+
+        createSpiralMatrix(2);
+        createSpiralMatrix(3);
+        createSpiralMatrix(4);
+        createSpiralMatrix(7);
+        System.out.println();
+
+        System.out.println("Result: " + stringCompression("ZxxxxbbbbXddddYeeeeccccc"));
+        System.out.println();
+
+        twoCirclesTest(circle1, circle2);
+        twoCirclesTest(circle3, circle4);
+        twoCirclesTest(circle5, circle6);
+        twoCirclesTest(circle7, circle8);
+        twoCirclesTest(circle9, circle9);
 
     }
 
 // *******************************************************************************
-    public static void twoCirclesTest() {
+    public static void twoCirclesTest(int[] c1, int[] c2) {
         //ex17: given center points for two circles and their corresponding radii,
-        //       determine if the circle circumferences:  1) C1 is inside C2
-        //                                                2) C2 is inside C1
-        //                                                3) C1 and C2 circumferences intersect
-        //                                                3) C1 and C2 circumferences don't overlap
-        //                                                4) C1 and C2 overlap exactly (same circle)
+        //       determine if the circle circumferences:  1) don't intersect
+        //                                                2) intersect at two points
+        //                                                3) intersect at one point
+        //                                                4) intersect one point and circle 1/2 inside 2/1
+        //                                                5) don't intersect but circle 1/2 inside 2/1
+        //                                                6) same circle
+        // input format: int array [x, y, radius]
+
+        System.out.print("C1:(" + c1[0] + "," + c1[1] + ")  Radius:" + c1[2] + "  ");
+        System.out.println("C2:(" + c2[0] + "," + c2[1] + ")  Radius:" + c2[2]);
+
+        double ptDist=0;
+        int diffX = (c1[0]-c2[0]);
+        int diffY = (c1[1]-c2[1]);
+        int c1Rad = (c1[2]);
+        int c2Rad = (c2[2]);
+
+        // calculate distance between two points
+        ptDist = Math.sqrt((diffX*diffX)+(diffY*diffY));
+        //System.out.println(ptDist + "," + c1Rad + "," + c2Rad);
+
+        if (ptDist == 0) {  // the center points are the same point
+            if (c1Rad > c2Rad) {
+                System.out.println("Circles don't intersect. Circle 2 inside Circle 1.");
+            } else if (c2Rad > c1Rad) {
+                System.out.println("Circles don't intersect. Circle 1 inside Circle 2.");
+            } else { // c1Rad == c2Rad
+                System.out.println("Circle 1 and Circle 2 are Coincident(the same circle).");
+            }
+        }else if (ptDist > (c1Rad+c2Rad)) {       // circles are separate
+            System.out.println("Circles don't intersect.");
+        } else if ((ptDist == c1Rad) && (2*ptDist == c2Rad)) {
+                System.out.println("Circles intersect at 1 point. Circle 1 is inside Circle 2.");
+        } else if ((ptDist == c2Rad) && (2*ptDist == c1Rad)) {
+                System.out.println("Circles intersect at 1 point. Circle 2 is inside Circle 1");
+        } else if (ptDist == (c1Rad + c2Rad)) {
+                System.out.println("Circles intersect at 1 point.");
+        } else if (ptDist < (c1Rad+c2Rad)) {
+            System.out.println("Circles intersect at 2 points.");
+        }
+
     }
+
 
 // *******************************************************************************
     public static String stringCompression(String str) {
         //ex16: given string with duplcate chars, remove and replace duplicates with dupe count
         //   e.g.  given: "ZxxxxbbbbXddddYeeeeccccc"  result: "Zx4b4Xd4Ye4c5"
 
+        System.out.println("Given: " + str);
         String outStr=""; Integer cntr=1; char chr2;
 
         for (int i=0; i< str.length(); i++) {
             if (i < str.length() - 1) {         // this check protects reading past input str length
                 chr2 = str.charAt(i + 1);
             } else {
-                chr2 = '\0';
+                chr2 = '\00'; // set chr2 to NUL so it reads a known char beyond str.length
             }
-
             if (str.charAt(i) == chr2) {    //checks for successive chars in the string
                 cntr++;                     // increment chr counter
             } else {
@@ -205,6 +287,9 @@ public class Main {
         //                         1, 3, 5}
 
         System.out.println("Given number to find in matrix: " + num);
+        for (int[] row : matrix) {              // print out the 2D matrix
+            System.out.println(Arrays.toString(row));
+        }
 
         LinkedList<LinkedList<Integer>> resultList = new LinkedList<>();
 
@@ -222,7 +307,9 @@ public class Main {
         } else {
             System.out.println("Result Found Cells[m,n]: " + resultList);
         }
+        System.out.println();
     }
+
 
 // *******************************************************************************
     public static String orderAlphaSumNums(String str) {
@@ -397,7 +484,7 @@ public class Main {
         //ex9: check if str1 is a substring of str2
         //     **  rewrite "str2.contains(str1)"  **
 
-        System.out.println();
+        System.out.println("Check Substring1 in String2");
         System.out.println("Str1: " + str1);    // print out input values
         System.out.println("Str2: " + str2);
 
@@ -429,7 +516,7 @@ public class Main {
         Stack<String> stack = new Stack<>();
         String revStr=""; String space=" ";
 
-        System.out.println("String: " + str);       // input string
+        System.out.println("Given String: " + str);       // input string
 
         while (tokenizer.hasMoreElements()) {       // "tokenize" string and push onto a stack
             String word = tokenizer.nextToken();
@@ -722,6 +809,7 @@ public class Main {
     public static int distinctStairTraversals(int stairsCount) {
         //ex2: find the number of distinct ways to climb n stairs, taking either 1 or 2 steps per traversal
 
+        System.out.println("Number of stairs: " + stairsCount);
         ArrayList<Integer> tries = new ArrayList<>();
         int totalWays = 0;
 
@@ -774,6 +862,12 @@ public class Main {
     public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
         //ex1: Find a number that appears only once in a given array.  All others appear twice.
         //  e.g. input: {10, 20, 10, 20, 30, 40, 40, 30, 50}   result: 50
+
+        System.out.print("Given array: [ ");
+        for (Integer num: numbers) {
+            System.out.print("[" + num + "] ");
+        }
+        System.out.println("]");
 
         ArrayList<Integer> nonDuplicate = new ArrayList<>();
 
