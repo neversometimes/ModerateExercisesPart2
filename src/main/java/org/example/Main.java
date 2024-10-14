@@ -4,7 +4,7 @@ import java.util.*;
 import java.lang.Math;
 
 public class Main {
-    public static Integer[] duplicatesArray = {10, 20, 10, 20, 40, 40, 30, 50, 50};
+    public static Integer[] duplicatesArray = {2, 10, 20, 10, 20, 20, 40, 30, 50, 50, 10, 30, 30, 50, 5};
 
     public static int[][] testMaze = {{0, 0, 0, 0, 0, 0, 0, 0},
                                       {0, 0, 1, 0, 1, 0, 1, 1},
@@ -33,7 +33,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println ("Result - single instance: " + findSingleOccurrence(duplicatesArray));
+        System.out.println ("Single Instance Values: " + findSingleOccurrence(duplicatesArray));
         System.out.println();
 
         System.out.println("Distinct Traversal Combinations: " + distinctStairTraversals(6));   // expect: 11
@@ -49,8 +49,9 @@ public class Main {
         System.out.println("Index of first unique char 'ababcbdedff': " + firstUniqueChar("ababcbdedff"));
         System.out.println();
 
-        System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "Dabce"));
-        System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("abcDe", "dabce"));
+        System.out.println ("S2 permutation of S1? " + checkSubstringPermutation("Aeede", "Deeea"));
+        System.out.println ("S2 permutation of S1? " + checkSubstringPermutation("ab19C2", "bC92a"));
+        System.out.println ("S2 permutation of S1: " + checkSubstringPermutation("194$", "194$"));
         System.out.println();
 
         System.out.println("Div by Subt Result: " + divideUsingSubtraction(-24, 7));
@@ -589,8 +590,9 @@ public class Main {
 
 // *******************************************************************************
     public static boolean checkSubstringPermutation(String str1, String str2) {
-        //ex6: check if str1 is a permutation of str2
-        // My solution: ensure equal string lengths; then check str2 for every chr in str1
+        //ex6: check if str1 is a permutation of str2, case ignored
+        // My solution: ensure equal string lengths; set each string to lower case
+        //      Check str2 for every chr in str1
         //      when true, remove that chr instance from str2.  If permutation is true,
         //       str2 will be empty string "", confirming 1:1 chr correspondence
 
@@ -600,6 +602,8 @@ public class Main {
         boolean isSub = false;
 
         if (str1.length() == str2.length()) {               // must have equal lengths if str1 is perm of str2
+        str1 = str1.toLowerCase();              // set both strings to lower case
+        str2 = str2.toLowerCase();              // this allows case to be ignored
 
             for (int i = 0; i < str1.length(); i++) {
                 if (str2.contains(str1.substring(i, i+1))) {
@@ -863,28 +867,33 @@ public class Main {
     }
 
 // *******************************************************************************
-    public static ArrayList<Integer> findSingleOccurrence (Integer[] numbers) {
-        //ex1: Find a number that appears only once in a given array.  All others appear twice.
-        //  e.g. input: {10, 20, 10, 20, 30, 40, 40, 30, 50}   result: 50
+    public static List<Integer> findSingleOccurrence (Integer[] numbers) {
+        //ex1: (updated)
+        // find _all_numbers_ that appear only once in a given array
 
-        System.out.print("Given array: [ ");
-        for (Integer num: numbers) {
-            System.out.print("[" + num + "] ");
-        }
-        System.out.println("]");
+        //  e.g. input: {10, 20, 10, 20, 20, 30, 40, 40, 30, 50, 60, 60, 5, 10}   result: 50, 5
+
+        System.out.println("Given array: " + Arrays.toString(numbers));
 
         ArrayList<Integer> nonDuplicate = new ArrayList<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
 
-        nonDuplicate.add(numbers[0]);           // add first number of given array to Nonduplicate ArrayList
-
-        for (int i = 1; i < numbers.length; i++) {      //  starting at 2nd number of given array
-            if (nonDuplicate.contains(numbers[i])) {          // if the non-duplicate list has the number,
-                nonDuplicate.remove(numbers[i]);                    //  remove it from the non-duplicate list
+        for (Integer num: numbers) {        // for each number in the given array of numbers
+            if (map.containsKey(num)) {               // if the map already contains the number/key
+                map.replace(num, map.get(num)+1);     // replace the corresponding value with existing value+1
             } else {
-                nonDuplicate.add(numbers[i]);                 // else add it to the non-duplicate list
+                map.put(num, 1);          //  if not in map, add num and value = 1
             }
         }
+
+      for (Integer key: map.keySet()) {     // for each key/value pair in the map
+          if (map.get(key) == 1) {              // if the value = 1
+              nonDuplicate.addFirst(key);       //  add the key to the nonDuplicate array
+          }
+      }
+
         return nonDuplicate;    // return the non-duplicate list containing the only non-duplicate number
+
     }
 
 }
